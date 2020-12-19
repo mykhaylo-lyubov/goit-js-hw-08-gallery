@@ -11,8 +11,8 @@ const refs = {
 };
 
 const createListItems = () => {
-  let newArrOfTags = [];
-  primaryArrayOfImages.map((item, idx) => {
+  //   let newArrOfTags = [];
+  let newArrOfTags = primaryArrayOfImages.map((item, idx) => {
     const tagLi = document.createElement("li");
     tagLi.classList.add("gallery__item");
 
@@ -30,7 +30,8 @@ const createListItems = () => {
     tagA.append(imgTag);
     tagLi.append(tagA);
 
-    newArrOfTags.push(tagLi);
+    return tagLi;
+    // newArrOfTags.push(tagLi);
   });
   refs.listOfImages.append(...newArrOfTags);
 };
@@ -58,8 +59,8 @@ function onImgClickOpenModal(event) {
 
   refs.divToOpenModal.classList.add("is-open");
 
-  refs.modalContentImgRef.setAttribute("src", clickedImgRef);
-  refs.modalContentImgRef.setAttribute("alt", clickedImgAltRef);
+  refs.modalContentImgRef.src = clickedImgRef;
+  refs.modalContentImgRef.alt = clickedImgAltRef;
 }
 
 function onBtnCloseModal() {
@@ -76,9 +77,7 @@ function onPressEscape(event) {
 }
 
 function onDivOverlay() {
-  window.removeEventListener("keydown", onPressEscape);
-  window.removeEventListener("keydown", onArrowKeys);
-  classAndAttributesRemoval();
+  onBtnCloseModal();
 }
 
 function onArrowKeys(event) {
@@ -94,8 +93,8 @@ function onArrowKeys(event) {
     const leftImgToShowRef = nextImgToShowLeft.dataset.source;
     const leftImgAltRef = nextImgToShowLeft.getAttribute("alt");
 
-    refs.modalContentImgRef.setAttribute("src", leftImgToShowRef);
-    refs.modalContentImgRef.setAttribute("alt", leftImgAltRef);
+    refs.modalContentImgRef.src = leftImgToShowRef;
+    refs.modalContentImgRef.alt = leftImgAltRef;
   }
 
   if (event.code === "ArrowRight") {
@@ -110,15 +109,15 @@ function onArrowKeys(event) {
     const rightImgToShowRef = nextImgToShowRight.dataset.source;
     const rightImgAltRef = nextImgToShowRight.getAttribute("alt");
 
-    refs.modalContentImgRef.setAttribute("src", rightImgToShowRef);
-    refs.modalContentImgRef.setAttribute("alt", rightImgAltRef);
+    refs.modalContentImgRef.src = rightImgToShowRef;
+    refs.modalContentImgRef.alt = rightImgAltRef;
   }
 }
 
 function classAndAttributesRemoval() {
   refs.divToOpenModal.classList.remove("is-open");
-  refs.modalContentImgRef.setAttribute("src", "");
-  refs.modalContentImgRef.setAttribute("alt", "");
+  refs.modalContentImgRef.src = "";
+  refs.modalContentImgRef.alt = "";
 }
 
 // =========== intersectionObserver ==================

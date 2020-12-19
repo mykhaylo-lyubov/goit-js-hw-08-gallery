@@ -22,7 +22,7 @@ const createListItems = () => {
 
     const imgTag = document.createElement("img");
     imgTag.classList.add("gallery__image");
-    imgTag.setAttribute("src", item.preview);
+    imgTag.setAttribute("data-lazy", item.preview);
     imgTag.setAttribute("data-source", item.original);
     imgTag.setAttribute("alt", item.description);
     imgTag.setAttribute("data-index", idx);
@@ -120,3 +120,27 @@ function classAndAttributesRemoval() {
   refs.modalContentImgRef.setAttribute("src", "");
   refs.modalContentImgRef.setAttribute("alt", "");
 }
+
+// =========== intersectionObserver ==================
+
+const allImagesRefs = refs.listOfImages.querySelectorAll(".gallery__image");
+
+const options = {
+  rootMargin: "100px",
+};
+
+const onEntries = (entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const imageInViewport = entry.target;
+      const src = imageInViewport.dataset.lazy;
+      imageInViewport.src = src;
+
+      observer.unobserve(imageInViewport);
+    }
+  });
+};
+
+const io = new IntersectionObserver(onEntries, options);
+
+allImagesRefs.forEach((image) => io.observe(image));
